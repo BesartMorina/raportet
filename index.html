@@ -14,41 +14,50 @@
 <style>
   :root {
     color-scheme: light;
-    --bg: #ffffff;
-    --surface: #f6f5f3;
-    --ink: #15171c;
+    --bg: #fcfcfb;
+    --surface: #f2f1ee;
+    --surface-2: #ffffff;
+    --ink: #121418;
     --muted: #71757e;
     --line: #e7e5e0;
-    --accent: #15171c;       /* butoni kryesor */
+    --accent: #121418;
     --accent-ink: #ffffff;
-    --mark: #9e7328;         /* vendi i parë */
+    --mark: #9a7024;
+    --mark-soft: rgba(154, 112, 36, 0.16);
     --alert: #9a3b2c;
+    --shadow: 0 1px 2px rgba(18, 20, 24, .05), 0 8px 24px rgba(18, 20, 24, .05);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --bg: #0f1013;
-      --surface: #171920;
-      --ink: #eeece7;
+      --bg: #0e0f12;
+      --surface: #191b21;
+      --surface-2: #14161b;
+      --ink: #f0eee9;
       --muted: #9a9ea8;
       --line: #262931;
-      --accent: #d6b070;
+      --accent: #d9b374;
       --accent-ink: #14151a;
-      --mark: #d6b070;
-      --alert: #d98d7e;
+      --mark: #d9b374;
+      --mark-soft: rgba(217, 179, 116, 0.2);
+      --alert: #dd9384;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4);
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #0f1013;
-    --surface: #171920;
-    --ink: #eeece7;
+    --bg: #0e0f12;
+    --surface: #191b21;
+    --surface-2: #14161b;
+    --ink: #f0eee9;
     --muted: #9a9ea8;
     --line: #262931;
-    --accent: #d6b070;
+    --accent: #d9b374;
     --accent-ink: #14151a;
-    --mark: #d6b070;
-    --alert: #d98d7e;
+    --mark: #d9b374;
+    --mark-soft: rgba(217, 179, 116, 0.2);
+    --alert: #dd9384;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4);
   }
 
   * { box-sizing: border-box; }
@@ -59,88 +68,105 @@
     background: var(--bg);
     color: var(--ink);
     font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    padding: calc(env(safe-area-inset-top, 0px) + 28px) 20px calc(env(safe-area-inset-bottom, 0px) + 40px);
+    padding: calc(env(safe-area-inset-top, 0px) + 24px) 18px 18px;
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 4px; }
-  h1 { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.02em; margin: 0; }
-  .day { color: var(--muted); font-size: 0.9rem; margin: 0 0 28px; }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .title { display: flex; flex-direction: column; gap: 2px; }
+  h1 { font-size: 1.75rem; font-weight: 650; letter-spacing: -0.03em; margin: 0; }
+  .day { color: var(--muted); font-size: 0.85rem; }
 
-  .ghost {
-    font: inherit; font-size: 0.88rem; color: var(--muted); cursor: pointer;
-    background: none; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px;
+  .pill {
+    font: inherit; font-size: 0.85rem; font-weight: 500; color: var(--muted); cursor: pointer;
+    background: var(--surface); border: 0; border-radius: 999px; padding: 9px 16px;
+    transition: color .15s, background .15s;
   }
-  .ghost:hover { color: var(--ink); border-color: var(--muted); }
-  button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pill:hover { color: var(--ink); }
+  .pill:active { transform: scale(.97); }
+  button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
   #input {
-    display: block; width: 100%; min-height: 160px; resize: vertical;
+    display: block; width: 100%; min-height: 150px; resize: vertical; margin-top: 24px;
     background: var(--surface); color: var(--ink);
-    border: 1px solid transparent; border-radius: 12px; padding: 14px 16px;
+    border: 1px solid transparent; border-radius: 18px; padding: 16px 18px;
     font: inherit; font-size: 15px; line-height: 1.6;
+    transition: border-color .15s, box-shadow .15s;
   }
   #input::placeholder { color: var(--muted); }
-  #input:focus { border-color: var(--line); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent); }
+  #input:focus { outline: none; border-color: var(--line); box-shadow: var(--shadow); }
 
-  .tools { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+  .tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
   .tools-left { display: flex; gap: 8px; }
-  .tools button {
-    font: inherit; font-size: 0.95rem; cursor: pointer; color: var(--ink);
-    background: none; border: 1px solid var(--line); border-radius: 8px; padding: 8px 16px;
-  }
-  .tools button:hover { border-color: var(--muted); }
-  .toggle { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
+  .toggle { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.88rem; cursor: pointer; }
   .toggle input { width: 17px; height: 17px; accent-color: var(--accent); }
 
-  .listhead { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 44px 0 8px; }
-  .listhead h2 { font-size: 1rem; font-weight: 600; margin: 0; }
-  .count { color: var(--muted); font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+  .listhead { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 40px 0 12px; }
+  .listhead h2 { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+  .count { color: var(--muted); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
 
-  ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
   li {
-    display: grid; grid-template-columns: 24px 1fr auto; gap: 14px; align-items: center;
-    padding: 14px 0; border-bottom: 1px solid var(--line);
+    display: grid; grid-template-columns: 30px 1fr auto; gap: 14px; align-items: center;
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px;
   }
-  .rank { color: var(--muted); font-size: 0.95rem; font-variant-numeric: tabular-nums; }
-  li.first .rank, li.first .total { color: var(--mark); }
-  .name { font-weight: 500; }
-  .detail { display: block; color: var(--muted); font-size: 0.82rem; margin-top: 3px; }
+  li.first { border-color: var(--mark-soft); background: linear-gradient(120deg, var(--mark-soft), transparent 55%), var(--surface-2); }
+  .rank {
+    display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--surface); color: var(--muted); font-size: 0.85rem; font-weight: 600; font-variant-numeric: tabular-nums;
+  }
+  li.first .rank { background: var(--mark); color: var(--bg); }
+  .name { font-weight: 550; letter-spacing: -0.01em; }
+  .detail { display: block; color: var(--muted); font-size: 0.8rem; margin-top: 3px; }
   .again { color: var(--alert); font-size: 0.78rem; margin-left: 8px; }
-  .total { font-size: 1.35rem; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .bar { display: block; height: 3px; border-radius: 999px; background: var(--line); margin-top: 9px; overflow: hidden; }
+  .bar span { display: block; height: 100%; border-radius: inherit; background: var(--mark); transition: width .35s ease; }
+  .total { font-size: 1.5rem; font-weight: 650; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  li.first .total { color: var(--mark); }
 
-  .note { color: var(--muted); font-size: 0.9rem; margin: 20px 0 0; }
+  .note { color: var(--muted); font-size: 0.9rem; margin: 16px 2px 0; }
   .note b { color: var(--ink); font-weight: 600; }
 
-  .copy {
-    display: block; width: 100%; margin-top: 32px; padding: 15px;
-    background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 12px;
-    font: inherit; font-size: 1rem; font-weight: 600; cursor: pointer;
+  .copywrap {
+    position: sticky; bottom: 0; margin-top: 28px;
+    padding: 14px 0 calc(env(safe-area-inset-bottom, 0px) + 10px);
+    background: linear-gradient(to top, var(--bg) 62%, transparent);
   }
+  .copy {
+    display: block; width: 100%; padding: 16px;
+    background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 16px;
+    font: inherit; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; cursor: pointer;
+    transition: opacity .15s, transform .1s;
+  }
+  .copy:active { transform: scale(.99); }
   .copy:disabled { background: var(--surface); color: var(--muted); cursor: default; }
 
   .toast {
-    position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 28px); transform: translateX(-50%);
-    background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 0.9rem;
-    opacity: 0; transition: opacity .18s; pointer-events: none;
+    position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 92px); transform: translateX(-50%) translateY(6px);
+    background: var(--ink); color: var(--bg); padding: 11px 20px; border-radius: 999px;
+    font-size: 0.9rem; font-weight: 500; box-shadow: var(--shadow);
+    opacity: 0; transition: opacity .18s, transform .18s; pointer-events: none;
   }
-  .toast.show { opacity: 1; }
-  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
   <header>
-    <h1>Raportet</h1>
-    <button class="ghost" id="theme" type="button"></button>
+    <div class="title">
+      <h1>Raportet</h1>
+      <span class="day" id="day"></span>
+    </div>
+    <button class="pill" id="theme" type="button"></button>
   </header>
-  <p class="day" id="day"></p>
 
   <textarea id="input" placeholder="Ngjit këtu mesazhet nga Telegram"></textarea>
 
   <div class="tools">
     <div class="tools-left">
-      <button id="paste" type="button">Ngjit</button>
-      <button id="clear" type="button">Fshij</button>
+      <button class="pill" id="paste" type="button">Ngjit</button>
+      <button class="pill" id="clear" type="button">Fshij</button>
     </div>
     <label class="toggle"><input type="checkbox" id="lastOnly"> Vetëm raporti i fundit</label>
   </div>
@@ -154,7 +180,9 @@
   <p class="note" id="empty">Ngjit mesazhet lart dhe rendi del këtu.</p>
   <p class="note" id="warn" hidden></p>
 
-  <button class="copy" id="copy" type="button" disabled>Kopjo listën</button>
+  <div class="copywrap">
+    <button class="copy" id="copy" type="button" disabled>Kopjo listën</button>
+  </div>
   <div class="toast" id="toast"></div>
 
 <script>
@@ -251,13 +279,19 @@ function escapeHtml(s) {
 function render() {
   const { ranked, noNumbers } = aggregate(parseReports(input.value), lastOnly.checked);
   copyText = toCopyText(ranked);
+  const top = ranked.length ? ranked[0].total : 0;
 
   list.innerHTML = ranked.map((s, i) => {
     const detail = s.parts.map(p => p.kind ? `${p.n} ${p.kind}` : p.n).join(' + ');
     const again = s.count > 1 ? `<span class="again">raportoi ${s.count} herë</span>` : '';
+    const width = top ? Math.round((s.total / top) * 100) : 0;
     return `<li class="${i === 0 ? 'first' : ''}">
       <span class="rank">${i + 1}</span>
-      <span><span class="name">${escapeHtml(s.name)}</span>${again}<span class="detail">${escapeHtml(detail)}</span></span>
+      <span>
+        <span class="name">${escapeHtml(s.name)}</span>${again}
+        <span class="detail">${escapeHtml(detail)}</span>
+        <span class="bar"><span style="width:${width}%"></span></span>
+      </span>
       <span class="total">${s.total}</span>
     </li>`;
   }).join('');
@@ -309,7 +343,7 @@ function applyTheme(mode) {
   const dark = isDark();
   themeBtn.textContent = dark ? 'E ndritshme' : 'E errët';
   themeBtn.setAttribute('aria-label', dark ? 'Kalo në pamje të ndritshme' : 'Kalo në pamje të errët');
-  $('themeColor').content = dark ? '#0f1013' : '#ffffff';
+  $('themeColor').content = dark ? '#0e0f12' : '#fcfcfb';
 }
 
 themeBtn.addEventListener('click', () => {
