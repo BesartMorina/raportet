@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="sq">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Raportet</title>
-<meta name="theme-color" content="#14532d">
+<meta name="theme-color" content="#f3e9d7">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -13,44 +13,38 @@
 <meta name="apple-mobile-web-app-title" content="Raportet">
 <style>
   :root {
-    --bg: #f6f2e8;
-    --card: #fffdf8;
-    --ink: #1f2a22;
-    --muted: #6b7466;
-    --line: #e4dccb;
-    --green: #14532d;
-    --green-soft: #e3eee5;
-    --gold: #b8892b;
-    --silver: #8a9099;
-    --bronze: #a8683a;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #101512;
-      --card: #18201b;
-      --ink: #e9ede6;
-      --muted: #9aa597;
-      --line: #2a352d;
-      --green: #4ade80;
-      --green-soft: #1e3326;
-      --gold: #e0b453;
-      --silver: #b9bec6;
-      --bronze: #d08f5f;
-    }
+    color-scheme: light;
+    --bg: #f3e9d7;
+    --card: #fdf8ee;
+    --ink: #3a2e20;
+    --muted: #8b7857;
+    --line: #e2d2b4;
+    --green: #1f4d35;
+    --green-soft: #e7e2d0;
+    --gold: #a97e2c;
+    --silver: #93856d;
+    --bronze: #9c6a3c;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  html, body { margin: 0; color: var(--ink); }
+  html {
+    background-color: var(--bg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23a97e2c' stroke-opacity='.16' stroke-width='1'%3E%3Crect x='10' y='10' width='36' height='36'/%3E%3Crect x='10' y='10' width='36' height='36' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E");
+  }
   body {
     font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 96px);
     max-width: 560px;
     margin: 0 auto;
   }
-  header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
-  h1 { font-size: 1.5rem; margin: 0; color: var(--green); letter-spacing: -0.01em; }
+  header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-size: 1.6rem; margin: 0; color: var(--green); letter-spacing: 0.01em; }
   .date { color: var(--muted); font-size: 0.9rem; }
+  .ornament { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; color: var(--gold); }
+  .ornament::before, .ornament::after { content: ""; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); flex: 1; }
+  .ornament span { font-size: 0.8rem; letter-spacing: 0.3em; }
 
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 12px; margin-bottom: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 12px; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(58, 46, 32, 0.06); }
   textarea {
     width: 100%; min-height: 150px; resize: vertical;
     border: 0; outline: none; background: transparent; color: var(--ink);
@@ -106,6 +100,7 @@
     <h1>Raportet</h1>
     <span class="date" id="date"></span>
   </header>
+  <div class="ornament"><span>۞</span></div>
 
   <section class="card">
     <textarea id="input" placeholder="Ngjit këtu mesazhet nga Telegram…"></textarea>
