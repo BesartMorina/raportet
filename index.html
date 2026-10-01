@@ -74,6 +74,13 @@
   }
 
   header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .actions { display: flex; gap: 8px; }
+  .pill.strong { background: var(--accent); color: var(--accent-ink); }
+  .howto {
+    margin: 16px 0 0; padding: 14px 16px; border-radius: 16px;
+    background: var(--surface); color: var(--muted); font-size: 0.9rem;
+  }
+  .howto b { color: var(--ink); font-weight: 600; }
   .title { display: flex; flex-direction: column; gap: 2px; }
   h1 { font-size: 1.75rem; font-weight: 650; letter-spacing: -0.03em; margin: 0; }
   .day { color: var(--muted); font-size: 0.85rem; }
@@ -158,8 +165,12 @@
       <h1>Raportet</h1>
       <span class="day" id="day"></span>
     </div>
-    <button class="pill" id="theme" type="button"></button>
+    <div class="actions">
+      <button class="pill strong" id="install" type="button" hidden>Instalo</button>
+      <button class="pill" id="theme" type="button"></button>
+    </div>
   </header>
+  <p class="howto" id="howto" hidden>Te Safari shtyp <b>Share</b> (katrori me shigjetë) dhe zgjidh <b>Add to Home Screen</b>.</p>
 
   <textarea id="input" placeholder="Ngjit këtu mesazhet nga Telegram"></textarea>
 
@@ -376,6 +387,34 @@ render();
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.register('sw.js');
 }
+
+// ---------- Instalimi në telefon ----------
+const installBtn = $('install');
+const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+let installPrompt = null;
+
+// Android/Chrome: butoni del kur shfletuesi lejon instalimin.
+addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  installPrompt = e;
+  installBtn.hidden = false;
+});
+addEventListener('appinstalled', () => { installBtn.hidden = true; toast('Appi u instalua'); });
+
+// iPhone: s'ka instalim automatik, prandaj tregojmë si bëhet.
+if (isIos && !standalone) installBtn.hidden = false;
+
+installBtn.addEventListener('click', async () => {
+  if (installPrompt) {
+    installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') installBtn.hidden = true;
+    installPrompt = null;
+  } else {
+    $('howto').hidden = !$('howto').hidden;
+  }
+});
 </script>
 </body>
 </html>
